@@ -1,0 +1,52 @@
+{% load format_filters %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>IP</th>
+      <th>Conectado</th>
+      <th>Desconectado</th>
+      <th>Duración</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for log in page_obj %}
+      <tr>
+        <td>{{ log.username }}</td>
+        <td>{{ log.ip_address }}</td>
+        <td>{{ log.connected_at|date:"j \d\e F \d\e Y \a \l\a\s H:i" }}</td>
+	<td>
+	   {% if log.disconnected_at %}
+	     {{ log.disconnected_at|date:"j \d\e F \d\e Y \a \l\a\s H:i" }}
+	  {% else %}
+	    <span style="color: green; font-weight: bold;">En curso</span>
+	  {% endif %}
+	</td>
+	<td>
+	  {% if log.duration %}
+	    {{ log.duration }}
+	  {% else %}
+    
+	  {% endif %}
+	</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No hay registros de conexión.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<div class="paginacion">
+  {% if page_obj.has_previous %}
+    <button class="pagina-btn" data-page="{{ page_obj.previous_page_number }}">Anterior</button>
+  {% endif %}
+
+  <span style="margin: 0 10px;">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+  {% if page_obj.has_next %}
+    <button class="pagina-btn" data-page="{{ page_obj.next_page_number }}">Siguiente</button>
+  {% endif %}
+</div>

@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Portal VPN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fb;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      color: #007bff;
+    }
+
+    a.button {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    a.button:hover {
+      background-color: #0056b3;
+    }
+
+    .logout {
+      float: right;
+      background-color: #dc3545;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .logout:hover {
+      background-color: #b02a37;
+    }
+
+    .step {
+      margin-top: 30px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    img.conectar{
+      width: 100%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 15px 0;
+
+    }
+
+    img.tutorial {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 15px 0;
+    }
+
+    .tabs {
+      margin-top: 30px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tab-buttons button {
+      background-color: #e9ecef;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab-buttons button.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+  <script>
+    function mostrarTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.tab-buttons button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      mostrarTab('tab-windows');  // Mostrar Windows por defecto
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <a href="{% url 'logout' %}" class="logout">Cerrar sesión</a>
+    <h2>Bienvenido {{ request.user.username }}</h2>
+
+    {% if zip_path %}
+      <div class="step">
+        <h3>1. Descargar archivo de configuración</h3>
+        <p>Haz clic en el botón para descargar el archivo ZIP con tu configuración personalizada:</p>
+        <a href="/{{ zip_path }}" class="button" download>Descargar ZIP</a>
+      </div>
+    {% endif %}
+
+    <div class="tabs">
+      <h3>2. Guía de instalación por sistema operativo</h3>
+      <div class="tab-buttons">
+        <button data-tab="tab-windows" onclick="mostrarTab('tab-windows')">Windows</button>
+        <button data-tab="tab-linux" onclick="mostrarTab('tab-linux')">Linux</button>
+      </div>
+
+      <!-- Windows -->
+      <div id="tab-windows" class="tab-content">
+        <div class="step">
+          <h3>Instalar OpenVPN en Windows</h3>
+          <ul>
+            <li>Descarga el instalador desde: <a href="https://openvpn.net/community-downloads/" target="_blank">openvpn.net</a></li>
+            <li>Ejecuta el instalador como administrador.</li>
+            <li>Sigue las instrucciones de instalación y acepta los valores por defecto.</li>
+          </ul>
+          <img src="{% static 'main/img/openvpn_download.png' %}" alt="Descargar OpenVPN" class="tutorial">
+        </div>
+
+        <div class="step">
+          <h3>Extraer y mover configuración</h3>
+          <p>Extrae el ZIP y copia el contenido a:</p>
+          <pre>C:\Users\TuUsuario\OpenVPN\config</pre>
+          <img src="{% static 'main/img/extraer_zip.png' %}" alt="Extraer ZIP" class="tutorial">
+          <img src="{% static 'main/img/zip_ruta.png' %}" alt="Extraer ZIP" >
+        </div>
+
+        <div class="step">
+          <h3>Conectarse</h3>
+          <ul>
+            <li>Abre <strong>OpenVPN GUI</strong>.</li>
+            <li>Haz clic izquierdo sobre el icono (^) que se encuentra abajo a la derecha y haz clic derecho sobre el icono de <strong>OpenVPN GUI</strong>.</li>
+            <li>Por último seleccione su usuario y haz clic en <strong>Conectar</strong></li>
+          </ul>
+          <img src="{% static 'main/img/conectar.png' %}" alt="Conectar OpenVPN"  class="conectar">
+          <img src="{% static 'main/img/conectar2.png' %}" alt="Conectar OpenVPN" class="conectar">
+        </div>
+      </div>
+
+      <!-- Linux -->
+      <div id="tab-linux" class="tab-content">
+        <div class="step">
+          <h3>Instalar OpenVPN en Linux</h3>
+          <ul>
+            <li>Abre una terminal y ejecuta:</li>
+          </ul>
+          <pre>sudo apt update  
+sudo apt install openvpn</pre>
+        </div>
+
+        <div class="step">
+          <h3>Extraer y copiar configuración</h3>
+          <ul>
+            <li>Descomprime el ZIP.</li>
+            <li>Copia los archivos `.ovpn`, `.crt`, `.key`, etc. a:</li>
+          </ul>
+          <pre>/etc/openvpn/client/</pre>
+        </div>
+
+        <div class="step">
+          <h3>Conectarse</h3>
+          <ul>
+            <li>Conéctate usando:</li>
+          </ul>
+          <pre>sudo openvpn --config /etc/openvpn/client/tu_archivo.ovpn</pre>
+          <p>También puedes usar herramientas gráficas como <code>network-manager-openvpn</code>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

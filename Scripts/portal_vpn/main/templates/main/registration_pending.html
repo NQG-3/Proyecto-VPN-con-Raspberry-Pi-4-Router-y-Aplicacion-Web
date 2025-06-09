@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro pendiente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            padding: 50px;
+            text-align: center;
+        }
+        .mensaje-pendiente {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        .mensaje-pendiente h2 {
+            color: #007bff;
+        }
+        .mensaje-pendiente p {
+            margin: 20px 0;
+        }
+        .boton {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .boton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="mensaje-pendiente">
+        <h2>¡Registro exitoso!</h2>
+        <p>Tu cuenta ha sido creada correctamente. Ahora debes esperar a que el administrador la active.</p>
+        <a href="{% url 'login' %}" class="boton">Volver al login</a>
+    </div>
+</body>
+</html>

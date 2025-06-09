@@ -1,0 +1,3 @@
+Usuario: vpn
+Contraseña: (no disponible — registrada como hash)
+Archivos: /home/vpn/portal_vpn/media/vpn

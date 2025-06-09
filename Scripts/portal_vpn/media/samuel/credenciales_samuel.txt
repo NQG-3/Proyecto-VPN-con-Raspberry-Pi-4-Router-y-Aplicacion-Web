@@ -1,0 +1,3 @@
+Usuario: samuel
+Contraseña: *** (el admin debe gestionarla manualmente)
+Archivos: /home/vpn/portal_vpn/media/samuel

@@ -1,0 +1,57 @@
+<style>
+.boton-azul {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease-in-out;
+}
+.boton-azul:hover {
+    background-color: #0056b3;
+}
+</style>
+
+
+{% for usuario in usuarios %}
+<tr>
+    <td>{{ usuario.username }}</td>
+    <td>{{ usuario.email }}</td>
+    <td>
+        <!-- Estado de conexión -->
+        {% if usuario.conectado %}
+            <span style="color: green; font-weight: bold;">Conectado</span>
+        {% else %}
+            <span style="color: red; font-weight: bold;">Desconectado</span>
+        {% endif %}
+        <br>
+        <!-- Estado de cuenta -->
+        {% if usuario.is_active %}
+            <span style="color: blue;">Activo</span>
+        {% else %}
+            <span style="color: gray;">Inactivo</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if usuario.username == 'vpn' %}
+            <span style="color: gray; font-style: italic;">Administrador principal (no editable)</span>
+        {% else %}
+            {% if usuario.is_active %}
+                <a href="{% url 'desactivar_usuario' usuario.id %}" class="boton-azul">Desactivar</a>
+            {% else %}
+                <a href="{% url 'activar_usuario' usuario.id %}" class="boton-azul">Activar</a>
+            {% endif %}
+		<a href="{% url 'eliminar_usuario' usuario.id %}" class="boton-azul" onclick="return confirm('¿Estás seguro que quieres eliminar este usuario?');">Eliminar</a>
+	    {% if usuario.is_superuser %}
+                <a href="{% url 'toggle_admin' usuario.id %}" class="boton-azul">Quitar admin</a>
+            {% else %}
+            <a href="{% url 'toggle_admin' usuario.id %}" class="boton-azul">Dar admin</a>
+           {% endif %}
+        {% endif %}
+</td>
+</tr>
+{% endfor %}
